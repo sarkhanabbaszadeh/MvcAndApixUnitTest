@@ -1,5 +1,9 @@
-.NET MVC and API xUnit Testing
+# .NET MVC and API xUnit Testing
+Database model : Database First
 
-Used Technologies
+# Used Technologies
 
-#.NET 8.0
+- .NET 8.0 Core
+- Entity FrameWork Core (core,sqlserver,tools)
+
+
