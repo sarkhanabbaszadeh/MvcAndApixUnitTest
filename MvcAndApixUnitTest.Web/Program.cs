@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+/*Scaffold-DbContext "Server URL" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models*/
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
