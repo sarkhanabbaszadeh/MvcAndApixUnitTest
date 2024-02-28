@@ -1,9 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using MvcAndApixUnitTest.Web.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 /*Scaffold-DbContext "Server URL" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models*/
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<XUnitTestDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings"));
+});
 
 var app = builder.Build();
 
