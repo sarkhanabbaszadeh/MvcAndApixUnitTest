@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<XUnitTestDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectStr"));
 });
 
 var app = builder.Build();
