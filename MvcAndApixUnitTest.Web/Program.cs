@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MvcAndApixUnitTest.Web.Models;
+using MvcAndApixUnitTest.Web.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<XUnitTestDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectStr"));
 });
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 

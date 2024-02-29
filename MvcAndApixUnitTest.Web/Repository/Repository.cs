@@ -40,6 +40,9 @@ namespace MvcAndApixUnitTest.Web.Repository
         public void Update(TEntity entity)
         {
             _entities.Entry(entity).State = EntityState.Modified;
+
+            //_entities.Update(entity);
+
             _context.SaveChanges();
         }
     }
