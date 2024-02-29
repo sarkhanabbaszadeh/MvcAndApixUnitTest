@@ -4,24 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using MvcAndApixUnitTest.Web.Models;
+using MvcAndApixUnitTest.Web.Repository;
 
 namespace MvcAndApixUnitTest.Web.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly XUnitTestDbContext _context;
+        private readonly IRepository<Product> _productsRepository;
 
-        public ProductsController(XUnitTestDbContext context)
+        public ProductsController(IRepository<Product> productsRepository)
         {
-            _context = context;
+            _productsRepository = productsRepository;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await _productsRepository.GetAll());
         }
 
         // GET: Products/Details/5
@@ -32,8 +34,7 @@ namespace MvcAndApixUnitTest.Web.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productsRepository.GetById((int)id);
             if (product == null)
             {
                 return NotFound();
@@ -57,8 +58,7 @@ namespace MvcAndApixUnitTest.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                await _productsRepository.Create(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -72,7 +72,7 @@ namespace MvcAndApixUnitTest.Web.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productsRepository.GetById((int)id);
             if (product == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace MvcAndApixUnitTest.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Stock,Color")] Product product)
+        public IActionResult Edit(int id, [Bind("Id,Name,Price,Stock,Color")] Product product)
         {
             if (id != product.Id)
             {
@@ -94,22 +94,9 @@ namespace MvcAndApixUnitTest.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                     _productsRepository.Update(product);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -123,8 +110,7 @@ namespace MvcAndApixUnitTest.Web.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _productsRepository.GetById((int)id);
             if (product == null)
             {
                 return NotFound();
@@ -138,19 +124,21 @@ namespace MvcAndApixUnitTest.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
+            var product = await _productsRepository.GetById(id);
 
-            await _context.SaveChangesAsync();
+            _productsRepository.Delete(product);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            var product = _productsRepository.GetById(id).Result;
+
+            if(product == null)
+                return false;
+            else
+                return true;
         }
     }
 }
