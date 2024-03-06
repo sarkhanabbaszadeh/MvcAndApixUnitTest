@@ -34,5 +34,18 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.IsType<ViewResult>(result);
         }
+
+        [Fact]
+        public async void Index_ActionExecutes_ReturnProductList()
+        {
+            _repositoryMock.Setup(repo => repo.GetAll()).ReturnsAsync(_products);
+
+            var result = await _productsController.Index();
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var productList = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult.Model);
+
+            Assert.Equal<int>(2, productList.Count());
+        }
     }
 }
