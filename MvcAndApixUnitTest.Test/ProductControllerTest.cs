@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Moq;
 using MvcAndApixUnitTest.Web.Controllers;
 using MvcAndApixUnitTest.Web.Models;
 using MvcAndApixUnitTest.Web.Repository;
@@ -24,6 +25,14 @@ namespace MvcAndApixUnitTest.Test
             _products = new List<Product>() { 
                 new Product { Id = 1, Name = "Book", Price = 12, Stock = 48, Color = "Red" }, 
                 new Product { Id = 2, Name = "Pen", Price = 3, Stock = 72, Color = "White" } };
+        }
+
+        [Fact]
+        public async void Index_ActionExecutes_ReturnView()
+        {
+            var result = await _productsController.Index();
+
+            Assert.IsType<ViewResult>(result);
         }
     }
 }
