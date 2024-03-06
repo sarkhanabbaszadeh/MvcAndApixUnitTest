@@ -33,7 +33,7 @@ namespace MvcAndApixUnitTest.Test
             var result = await _productsController.Index();
 
             Assert.IsType<ViewResult>(result);
-        }
+        } 
 
         [Fact]
         public async void Index_ActionExecutes_ReturnProductList()
@@ -46,6 +46,16 @@ namespace MvcAndApixUnitTest.Test
             var productList = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult.Model);
 
             Assert.Equal<int>(2, productList.Count());
+        }
+
+        [Fact]
+        public async void Details_IdIsNull_ReturnRedirectToIndexAction()
+        {
+            var result = await _productsController.Details(null);
+
+            var redirect= Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Index", redirect.ActionName);
         }
     }
 }
