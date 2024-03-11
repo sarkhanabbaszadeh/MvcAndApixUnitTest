@@ -97,5 +97,17 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.IsType<ViewResult>(result);
         }
+
+        [Fact]
+        public async void Create_InValidModelState_ReturnView()
+        {
+            _productsController.ModelState.AddModelError("Name", "Ad yazmaq vacibdir!");
+
+            var result = await _productsController.Create(_products.First());
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.IsType<Product>(viewResult.Model);
+        }
     }
 }
