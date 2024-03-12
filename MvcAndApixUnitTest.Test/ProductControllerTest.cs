@@ -119,5 +119,19 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.Equal("Index",redirect.ActionName);
         }
+
+        [Fact]
+        public async void CreatePOST_ValidModelState_CreateMethodExecute()
+        {
+            Product newProduct = null;
+
+            _repositoryMock.Setup(repo=>repo.Create(It.IsAny<Product>())).Callback<Product>(x=>newProduct = x);
+
+            var result = await _productsController.Create(_products.First());
+
+            _repositoryMock.Verify(repo=>repo.Create(It.IsAny<Product>()),Times.Once);
+
+            Assert.Equal(_products.First().Id, newProduct.Id);
+        }
     }
 }
