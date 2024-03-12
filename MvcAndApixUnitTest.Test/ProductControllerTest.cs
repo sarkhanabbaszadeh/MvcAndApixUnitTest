@@ -99,7 +99,7 @@ namespace MvcAndApixUnitTest.Test
         }
 
         [Fact]
-        public async void Create_InValidModelState_ReturnView()
+        public async void CreatePOST_InValidModelState_ReturnView()
         {
             _productsController.ModelState.AddModelError("Name", "Ad yazmaq vacibdir!");
 
@@ -111,7 +111,7 @@ namespace MvcAndApixUnitTest.Test
         }
 
         [Fact]
-        public async void Create_ValidModelState_ReturnRedirectToIndexAction()
+        public async void CreatePOST_ValidModelState_ReturnRedirectToIndexAction()
         {
             var result = await _productsController.Create(_products.First());
 
