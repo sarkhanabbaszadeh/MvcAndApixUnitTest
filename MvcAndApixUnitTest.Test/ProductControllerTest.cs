@@ -143,6 +143,17 @@ namespace MvcAndApixUnitTest.Test
 
             _repositoryMock.Verify(repo=>repo.Create(It.IsAny<Product>()),Times.Never);
 
-        } 
+        }
+
+        //Testing the edit method with different scenarios
+        [Fact]
+        public async void Edit_IdIsNull_ReturnRedirectToIndexAction()
+        {
+            var result = await _productsController.Edit(null);
+
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Index",redirect.ActionName);
+        }
     }
 }
