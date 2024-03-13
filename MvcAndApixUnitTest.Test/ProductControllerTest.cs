@@ -155,5 +155,20 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.Equal("Index",redirect.ActionName);
         }
+
+        [Theory]
+        [InlineData(3)]
+        public async void Edit_IdInValid_ReturnNotFound(int productId)
+        {
+            Product product = null;
+
+            _repositoryMock.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+
+            var result = await _productsController.Edit(productId);
+
+            var redirect = Assert.IsType<NotFoundResult>(result);
+
+            Assert.Equal<int>(404, redirect.StatusCode);
+        }
     }
 }
