@@ -133,5 +133,16 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.Equal(_products.First().Id, newProduct.Id);
         }
+
+        [Fact]
+        public async void CreatePOST_InValidModelState_NeverCreateExecute()
+        {
+            _productsController.ModelState.AddModelError("Name", "");
+
+            var result = await _productsController.Create(_products.First());
+
+            _repositoryMock.Verify(repo=>repo.Create(It.IsAny<Product>()),Times.Never);
+
+        } 
     }
 }
