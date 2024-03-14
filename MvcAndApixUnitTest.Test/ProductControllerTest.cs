@@ -225,5 +225,19 @@ namespace MvcAndApixUnitTest.Test
             Assert.Equal("Index", redirect.ActionName);
 
         }
+
+        [Theory]
+        [InlineData(1)]
+        public void EditPOST_ValidModelState_UpdateMethodExecute(int productId)
+        {
+            var product = _products.First(x=>x.Id==productId);
+
+            _repositoryMock.Setup(repo => repo.Update(product));
+
+            _productsController.Edit(productId,product);
+
+            _repositoryMock.Verify(repo => repo.Update(It.IsAny<Product>()), Times.Once);
+
+        }
     }
 }
