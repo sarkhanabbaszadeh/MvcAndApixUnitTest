@@ -170,5 +170,25 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.Equal<int>(404, redirect.StatusCode);
         }
+
+        [Theory]
+        [InlineData(2)]
+        public async void Edit_ActionExecutes_ReturnProduct(int productId)
+        {
+            var product = _products.First(x => x.Id == productId);
+
+            _repositoryMock.Setup(repo=>repo.GetById(productId)).ReturnsAsync(product);
+
+            var result = await _productsController.Edit(productId);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
+
+            Assert.Equal(product.Id, resultProduct.Id);
+
+            Assert.Equal(product.Name, resultProduct.Name);
+
+        }
     }
 }
