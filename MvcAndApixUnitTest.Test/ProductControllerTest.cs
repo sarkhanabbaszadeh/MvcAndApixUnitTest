@@ -239,5 +239,13 @@ namespace MvcAndApixUnitTest.Test
             _repositoryMock.Verify(repo => repo.Update(It.IsAny<Product>()), Times.Once);
 
         }
+
+        [Fact]
+        public async void Delete_IdIsNull_ReturnNotFound()
+        {
+            var result = await _productsController.Delete(null);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
     }
 }
