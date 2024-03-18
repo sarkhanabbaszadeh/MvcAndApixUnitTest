@@ -259,5 +259,19 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.IsType<NotFoundResult>(result);
         }
+
+        [Theory,InlineData(1)]
+        public async void Delete_ActionExecutes_ReturnProduct(int productId)
+        {
+            var product = _products.First(x => x.Id == productId);
+
+            _repositoryMock.Setup(repo=>repo.GetById(productId)).ReturnsAsync(product);
+
+            var result = await _productsController.Delete(productId);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.IsAssignableFrom<Product>(viewResult.Model);
+        }
     }
 }
