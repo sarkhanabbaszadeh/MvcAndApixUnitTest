@@ -10,7 +10,7 @@ using MvcAndApixUnitTest.Web.Repository;
 
 namespace MvcAndApixUnitTest.Web.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductsApiController : ControllerBase
     {
