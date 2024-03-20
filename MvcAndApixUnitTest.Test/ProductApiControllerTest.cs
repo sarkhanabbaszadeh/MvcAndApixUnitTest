@@ -85,5 +85,18 @@ namespace MvcAndApixUnitTest.Test
             Assert.IsType<BadRequestResult>(result);
         }
 
+        [Theory,InlineData(1)]
+        public void PutProduct_ActionExecutes_ReturnNotContent(int productId)
+        {
+            var product = _products.First(x => x.Id == productId);
+
+            _mockRepo.Setup(x => x.Update(product));
+
+            var result = _controller.PutProduct(productId, product);
+
+            _mockRepo.Verify(x => x.Update(product), Times.Once);
+
+            Assert.IsType<NoContentResult>(result);
+        }
     }
 }
