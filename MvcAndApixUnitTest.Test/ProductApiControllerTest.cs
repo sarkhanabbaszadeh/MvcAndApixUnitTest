@@ -76,7 +76,7 @@ namespace MvcAndApixUnitTest.Test
         }
 
         [Theory,InlineData(1)]
-        public async void PutProduct_IdIsNotEqualProduct_ReturnBadRequestResult(int productId)
+        public void PutProduct_IdIsNotEqualProduct_ReturnBadRequestResult(int productId)
         {
             var product = _products.First(x => x.Id == productId);
 
@@ -84,5 +84,6 @@ namespace MvcAndApixUnitTest.Test
 
             Assert.IsType<BadRequestResult>(result);
         }
+
     }
 }
