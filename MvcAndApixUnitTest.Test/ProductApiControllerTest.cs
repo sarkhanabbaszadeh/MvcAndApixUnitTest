@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 using MvcAndApixUnitTest.Web.Controllers;
 using MvcAndApixUnitTest.Web.Models;
@@ -113,6 +114,18 @@ namespace MvcAndApixUnitTest.Test
             _mockRepo.Verify(x => x.Create(product), Times.Once);
 
             Assert.Equal("GetProduct", createdAtActionResult.ActionName);
+        }
+
+        [Theory,InlineData(0)]
+        public async void DeleteProduct_IdInValid_ReturnNotFound(int productId)
+        {
+            Product product = null;
+
+            _mockRepo.Setup(x=>x.GetById(productId)).ReturnsAsync(product);
+
+            var resultNotFound = await _controller.DeleteProduct(productId);
+
+            Assert.IsType<NotFoundResult>(resultNotFound.Result);
         }
     }
 }
