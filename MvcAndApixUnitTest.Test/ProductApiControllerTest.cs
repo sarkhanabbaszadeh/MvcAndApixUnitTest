@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 using MvcAndApixUnitTest.Web.Controllers;
+using MvcAndApixUnitTest.Web.Helpers;
 using MvcAndApixUnitTest.Web.Models;
 using MvcAndApixUnitTest.Web.Repository;
 using System;
@@ -17,6 +18,7 @@ namespace MvcAndApixUnitTest.Test
     {
         private readonly Mock<IRepository<Product>> _mockRepo;
         private readonly ProductsApiController _controller;
+        private readonly Helper _helper;
 
         private List<Product> _products;
 
@@ -24,10 +26,18 @@ namespace MvcAndApixUnitTest.Test
         {
             _mockRepo = new Mock<IRepository<Product>>();
             _controller = new ProductsApiController(_mockRepo.Object);
-
+            _helper = new Helper();
             _products = new List<Product>() { new Product { Id = 1, Name = "Kitab", Price = 25, Stock = 72, Color = "Black" },
             new Product { Id = 2, Name = "Pen", Price = 5, Stock = 120, Color = "red" }};
 
+        }
+
+        [Theory,InlineData(4,5,9)]
+        public void Add_SimpleValues_ReturnTotal(int a, int b, int total)
+        {
+            var result = _helper.add(a, b);
+
+            Assert.Equal(total, result);
         }
 
         [Fact]
