@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MvcAndApixUnitTest.Web.Models;
 
@@ -19,4 +20,8 @@ public partial class Product
 
     [Required]
     public string? Color { get; set; }
+
+    public int CategoryID { get; set; }
+
+    public Category Category { get; set; }
 }
