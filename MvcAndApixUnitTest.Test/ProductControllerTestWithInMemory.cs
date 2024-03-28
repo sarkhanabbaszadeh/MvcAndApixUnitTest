@@ -45,5 +45,25 @@ namespace MvcAndApixUnitTest.Test
                 Assert.Equal(newProduct.Name, product.Name);
             }
         }
+
+        [Theory,InlineData(1)]
+        public async Task DeleteCategory_ExistCategoryId_DeletedAllProducts(int categoryID)
+        {
+            using(var context = new XUnitTestDbContext(_contextOptions))
+            {
+                var category = await context.Category.FindAsync(categoryID);
+
+                context.Category.Remove(category);
+
+                context.SaveChanges();
+            }
+
+            using(var context = new XUnitTestDbContext(_contextOptions))
+            {
+                var products = await context.Product.Where(x=>x.CategoryID == categoryID).ToListAsync();
+
+                Assert.Empty(products);
+            }
+        }
     }
 }
