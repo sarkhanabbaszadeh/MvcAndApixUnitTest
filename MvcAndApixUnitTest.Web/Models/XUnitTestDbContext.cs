@@ -33,7 +33,7 @@ public partial class XUnitTestDbContext : DbContext
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
         });
 
-        modelBuilder.Entity<Category>().HasData(new Category { ID = 1, Name = "Pens" }, new Category { ID = 2, Name = "Books" });
+        //modelBuilder.Entity<Category>().HasData(new Category { ID = 1, Name = "Pens" }, new Category { ID = 2, Name = "Books" });
 
         OnModelCreatingPartial(modelBuilder);
     }
