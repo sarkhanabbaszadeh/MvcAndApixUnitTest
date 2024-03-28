@@ -15,6 +15,7 @@ namespace MvcAndApixUnitTest.Test
         public void SetContextOptions(DbContextOptions<XUnitTestDbContext> contextOptions)
         {
             _contextOptions = contextOptions;
+            Seed();
         }
 
         public void Seed()
@@ -27,9 +28,11 @@ namespace MvcAndApixUnitTest.Test
 
                 context.Category.Add(new Category { Name = "Pens" });
                 context.Category.Add(new Category { Name = "Books" });
+                context.SaveChanges();
 
                 context.Product.Add(new Product() { CategoryID = 1, Name = "Pen 1", Price = 85, Stock = 99, Color = "White" });
                 context.Product.Add(new Product() { CategoryID = 1, Name = "Pen 2", Price = 65, Stock = 79, Color = "Black" });
+                context.SaveChanges();
             }
         }
     }
